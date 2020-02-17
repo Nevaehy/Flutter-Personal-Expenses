@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_personal_expense_app/widgets/chart.dart';
 
@@ -44,6 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Personal Expenses"),
+        actions: <Widget>[
+          if (Platform.isIOS)  _buildIOSContent()
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -57,10 +62,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ]
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _showAddNewTransaction(context),
-      ),
+      floatingActionButton: Platform.isAndroid ? _buildAndroidContent() : Container(width: 0, height: 0)
+    );
+  }
+
+  Widget _buildIOSContent() {
+    return IconButton(
+      icon: Icon(Icons.add),
+      onPressed: () => _showAddNewTransaction(context)
+    );
+  }
+
+  Widget _buildAndroidContent() {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () => _showAddNewTransaction(context),
     );
   }
 
